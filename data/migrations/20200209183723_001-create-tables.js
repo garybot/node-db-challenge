@@ -5,7 +5,7 @@ exports.up = function(knex) {
 			tbl.increments();
 			tbl.string('project_name', 128).notNullable();
 			tbl.string('project_description', 128);
-			tbl.boolean('completed').defaultTo(false);
+			tbl.boolean('completed').defaultTo('false');
 		})
 		.createTable('tasks', tbl => {
 			tbl.increments();
@@ -16,7 +16,7 @@ exports.up = function(knex) {
 	  			.onUpdate('CASCADE');
 			tbl.string('task_description', 128).notNullable();
 			tbl.string('notes', 128);
-			tbl.boolean('completed').defaultTo(false);
+			tbl.boolean('completed').defaultTo('false');
 		})
 		.createTable('resources', tbl => {
 			tbl.increments();
@@ -35,12 +35,13 @@ exports.up = function(knex) {
 	  			.onDelete('CASCADE')
 	  			.onUpdate('CASCADE');
 			tbl.primary(['project_id', 'resource_id']);
-
 		})
-
-  
 };
 
 exports.down = function(knex) {
-  
+	return knex.schema
+		.dropTableIfExists('project_resources')
+		.dropTableIfExists('resources')
+		.dropTableIfExists('tasks')
+		.dropTableIfExists('projects')
 };
